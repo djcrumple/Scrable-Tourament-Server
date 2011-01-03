@@ -34,30 +34,44 @@ do {
 		break;
 	}
 	/* Send instructions. */
-	$msg = "\nWelcome to the PHP Test Server. \n" .
-		"To quit, type 'quit'. To shut down the server type 'shutdown'.\n";
-	socket_write($msgsock, $msg, strlen($msg));
+	//$msg = "\nWelcome to the PHP Test Server. \n" .
+		//"To quit, type 'quit'. To shut down the server type 'shutdown'.\n";
+	//socket_write($msgsock, $msg, strlen($msg));
+//
+	//do {
+		//if (false === ($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ))) {
+			//echo "socket_read() failed: reason: " . socket_strerror(socket_last_error($msgsock)) . "\n";
+			//break 2;
+		//}
+		//if (!$buf = trim($buf)) {
+			//continue;
+		//}
+		//if ($buf == 'quit') {
+			//break;
+		//}
+		//if ($buf == 'shutdown') {
+			//socket_close($msgsock);
+			//break 2;
+		//}
+		//$talkback = "PHP: You said '$buf'.\n";
+		//socket_write($msgsock, $talkback, strlen($talkback));
+		//echo "$buf\n";
+	//} while (true);
+	//socket_close($msgsock);
+	
+	if (false === ($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ))) {
+		echo "socket_read() failed: reason: " . socket_strerror(socket_last_error($msgsock)) . "\n";
+		continue;
+	}
 
-	do {
-		if (false === ($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ))) {
-			echo "socket_read() failed: reason: " . socket_strerror(socket_last_error($msgsock)) . "\n";
-			break 2;
-		}
-		if (!$buf = trim($buf)) {
-			continue;
-		}
-		if ($buf == 'quit') {
-			break;
-		}
-		if ($buf == 'shutdown') {
-			socket_close($msgsock);
-			break 2;
-		}
-		$talkback = "PHP: You said '$buf'.\n";
-		socket_write($msgsock, $talkback, strlen($talkback));
-		echo "$buf\n";
-	} while (true);
-	socket_close($msgsock);
+	if (!$buf = trim($buf)) {
+		echo "Empty string\n";
+		continue;
+	}
+
+	echo $buf."\n";
+
+
 } while (true);
 
 socket_close($sock);
