@@ -2,6 +2,22 @@
 
 <?php
 
+// List of all registered players indexed by their name. For each player
+// we will know their IP and Port number.
+$playerList = array();
+
+function register_player( $name, $ip, $port ) {
+	$player = (object)array(
+		'name' => $name,
+		'ip' => $ip,
+		'port' => $port
+	);
+
+	$playerList[ $name ] = $player;
+
+	return $player;
+}
+
 require_once( 'game.inc' );
 
 error_reporting(E_ALL);
@@ -69,8 +85,40 @@ do {
 		continue;
 	}
 
-	echo $buf."\n";
+	try {
+		$request = new SimpleXMLElement( $buf );
+	} catch( Exception $e ) {
+		echo $e."\n";
+		continue;
+	}
 
+	echo "Recieved the following request: \n";
+	print_r( $request );
+
+	switch( $request->type ) {
+
+	case 'register':
+		$player = register_player( 	(string)$request->message->name,
+									(string)$request->message->ip,
+									(string)$request->message->port );
+
+		echo "Registered $player->name\n";
+		break;
+
+	case 'start_game':
+
+		break;
+
+	case 'play_tiles':
+		break;
+
+	default:
+		echo "ERROR: unkown request type\n";
+		break;
+	
+	}
+	
+	socket_close($msgsock);
 
 } while (true);
 

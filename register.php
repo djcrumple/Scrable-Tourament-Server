@@ -15,11 +15,15 @@ for( $i = 1; $i <= 4; $i++ ) {
 	$file = fsockopen( $serverIp, $serverPort );
 
 	$register = 
-		"<register>".
-		"<name>Player$i</name>".
-		"<ip>$myIp</ip>".
-		"<port>$myPort</port>".
-		"</register>\n".
+		"<request>".
+			"<type>register</type>".
+			"<message>".
+				"<name>Player$i</name>".
+				"<ip>$myIp</ip>".
+				"<port>$myPort</port>".
+			"</message>".
+		"</request>".
+		"\n".
 		"";
 
 	if( false === fwrite( $file, $register ) ) {
