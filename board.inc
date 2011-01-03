@@ -6,7 +6,7 @@ class Board {
 
 	function __construct() {
 		$size = 15;
-		$spaces
+		$spaces = false;
 	}
 
 }
