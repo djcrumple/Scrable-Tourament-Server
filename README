@@ -1,0 +1,131 @@
+This is a server that allows Scrabble AIs to compete against one another. Messaging between server
+and clients are formatted in XML. The clients are considered stateless. When the clients are required to
+make a move, they will be handled the current game state. The current game state will include
+all the information needed to make a move.
+
+This method of XML message passsing and stateless clients should allow easy development of AIs in 
+many programming languages. 
+
+
+RUNNING THE SERVER
+
+Just run ./server.php. The server is now listening on port 4609.
+
+
+RUNNING A CLIENT
+
+The client interfaces with the server using XML messages. A client does not initiate games. Instead,
+the client acts as another "server" that waits for game states and makes moves when it recieves a game
+state.
+
+When a client is started, it should make an initial "register" request with the server. The register 
+message will let the server know who the player is and how to connect to the player. This request has
+the following format.
+
+<request>
+  <type>register</type>
+  <message>
+    <name>[Name of player]</name>
+    <ip>[IP of player]</ip>
+    <port>[port]</port>
+  </message>
+</request>
+
+After registering, the client must open at socket on the port using the information supplied to the server.
+The client now waits for game states, which will be descibed below.
+
+
+STARTING GAMES
+
+Games are started by sending "game_start" requests to the server. This request includes a list of 
+all the players that will player (max 4 players). When the server receives a request to start a game
+it will ping all of the players to make sure they are still available. If every player is available,
+a random player order will be determined and the first player will receive the initial game state.
+
+A request to start a game has the following format.
+
+<request>
+  <type>game_start</type>
+  <message>
+    <player>[Name of player]</player>
+    <player>[Name of player]</player>
+    ...
+  </message>
+</request>
+
+
+HANDLE THE PING
+
+Client must be able to handle a ping request. The ping has the following format.
+
+<request>
+  <type>ping</type>
+</request>
+
+The client must respond to the ping by imediately sending the string "hello" to the server. If the client 
+does not responsd within a second, the player will be dropped from the game and the game will end.
+
+
+PLAY A TURN
+
+The client must wait for game states. The game state will include the board and the tiles in the players
+hand.
+
+The board will be represented by a string where each character represents a space. The first character
+would be located at [0][0] on the board, the second character located at [0][1]. The sixteenth char
+is located at [1][0]. The final char is located at [14][14].
+
+Sample XML from an opening game state.
+
+<request>
+  <type>game_state</type>
+  <message>
+  <board>000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</board>
+    <hand>
+      <tile>
+        <letter>n</letter>
+        <value>1</value>
+      </tile>
+      <tile>
+        <letter>e</letter>
+        <value>1</value>
+      </tile>
+      <tile>
+        <letter>i</letter>
+        <value>1</value>
+      </tile>
+      <tile>
+        <letter>j</letter>
+        <value>8</value>
+      </tile>
+      <tile>
+        <letter>i</letter>
+        <value>1</value>
+      </tile>
+      <tile>
+        <letter>p</letter>
+        <value>3</value>
+      </tile>
+      <tile>
+        <letter>d</letter>
+        <value>2</value>
+      </tile>
+    </hand>
+  </message>
+</request>
+
+
+SAMPLE FILES
+
+client.php: A sample client that can register with the server and wait for game states.
+
+start_game.php: Send a game request to the server that will allow client.php to play a game by itself.
+
+TODO:
+
+Determine XML for making moves and implement server code for handling moves.
+
+Handle "replace tiles" request from clients.
+
+Track game statistic.
+

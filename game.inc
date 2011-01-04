@@ -56,6 +56,11 @@ class Game {
 		$this->players[] = $player;
 	}
 
+
+	function play_word( $word, $x1, $y1, $x2, $y2 ) {
+		$this->board->play_word( $word, $x1, $y1, $x2, $y2 );
+	}
+
 	function next_turn() {
 		if( $this->currentPlayer === false ) {
 			// This is the first turn of the game. Shuffle the players.

@@ -1,6 +1,10 @@
 <?php
 
 
+require_once( 'dictionary.inc' );
+
+$dictionary = false;
+
 class Board {
 	const SPACE_TYPE_EMPTY 			= '0';
 	const SPACE_TYPE_DOUBLE_LETTER 	= '1';
@@ -37,6 +41,17 @@ class Board {
 		
 		return $xml;
 	}
+
+	function play_word( $word, $x1, $y1, $x2, $y2 ) {
+		global $dictionary;
+
+		if( $dictionary === false ) {
+			$dictionary = new Dictionary();
+		}
+
+
+	}
+
 
 }
 
