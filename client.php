@@ -90,6 +90,40 @@ do {
 		socket_write( $msgsock, $resp, strlen( $resp ) );
 		break;
 
+	case 'game_state':
+		$file = fsockopen( $serverIp, $serverPort );
+
+		$req = 
+			"<request>".
+				"<type>play</type>".
+				"<message>".
+					"<move>".
+						"<letter>z</letter>".
+						"<x>7</x>".
+						"<y>8</y>".
+					"</move>".
+					"<move>".
+						"<letter>a</letter>".
+						"<x>8</x>".
+						"<y>8</y>".
+					"</move>".
+					"<move>".
+						"<letter>p</letter>".
+						"<x>9</x>".
+						"<y>8</y>".
+					"</move>".
+				"</message>".
+			"</request>".
+			"\n".
+			"";
+
+		if( false === fwrite( $file, $req ) ) {
+			echo "ERROR: Could not register.\n";
+		}
+
+		break;
+
+
 
 	default:
 		echo "ERROR: unkown request type\n";

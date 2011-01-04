@@ -57,8 +57,39 @@ class Game {
 	}
 
 
-	function play_word( $word, $x1, $y1, $x2, $y2 ) {
-		$this->board->play_word( $word, $x1, $y1, $x2, $y2 );
+	/**
+	 * Make a play in the game. A play consists of a series of moves. Each move places
+	 * a tile on the board. $moves has the following format.
+	 *     $moves = array(
+	 *         (object)array(
+	 *             'tile' => The tile to be played.
+	 *             'x' => The x position on the board to place the tile.
+	 *             'y' => The y position on the board to place the tile.
+	 *
+	 *     );
+	 *
+	 * Scrabble game is cruel and unforgiving. If the move is bad, the players turn is skipped.
+	 **/
+	function play( $moves ) {
+		// Grab the current player.
+		$player = $this->players[ $this->currentPlayer ];
+
+		// See if the player has to tiles he is trying to play.
+		//foreach( $moves as $move ) {
+			//if( !$player->has_letter( $move->tile->letter ) ) {
+				//return false;
+			//}
+		//}
+
+		// Pass the moves to the board.
+		$score = $this->board->play( $moves );
+
+		if( $score === false ) {
+			echo "ERROR: Illegal play.\n";
+		} else {
+			echo "Play was worth $score points\n";
+		}
+
 	}
 
 	function next_turn() {
@@ -78,8 +109,8 @@ class Game {
 
 		$handXml = $this->players[ $this->currentPlayer ]->hand_to_xml();
 
-		echo $boardXml."\n";
-		echo $handXml."\n";
+		//echo $boardXml."\n";
+		//echo $handXml."\n";
 
 		$req = 
 			"<request>".

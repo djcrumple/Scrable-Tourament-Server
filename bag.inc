@@ -32,47 +32,17 @@ $distribution = array(
 	'z' => 1
 );
 
-$values = array(
-	'*' => 0,
-	'a' => 1,
-	'b' => 3,
-	'c' => 3,
-	'd' => 2,
-	'e' => 1,
-	'f' => 2,
-	'g' => 3,
-	'h' => 4,
-	'i' => 1,
-	'j' => 8,
-	'k' => 5,
-	'l' => 1,
-	'm' => 3,
-	'n' => 1,
-	'o' => 1,
-	'p' => 3,
-	'q' => 10,
-	'r' => 1,
-	's' => 1,
-	't' => 1,
-	'u' => 1,
-	'v' => 4,
-	'w' => 4,
-	'x' => 1,
-	'y' => 4,
-	'z' => 10 
-);
 
 class Bag {
 	public $tiles;
 
 	function __construct() {
 		global $distribution;
-		global $values;
 
 		// Fill the bag.
 		foreach( $distribution as $letter => $num ) {
 			for( $i = 0; $i < $num; $i++ ) {
-				$tile = new Tile( $letter, $values[ $letter ] );
+				$tile = new Tile( $letter );
 				$this->tiles[] = $tile;
 			}
 		}
@@ -94,7 +64,7 @@ class Bag {
 	}
 
 	// Put a tile back in the bag.
-	function replace_tile( $tile ) {
+	function return_tile( $tile ) {
 		// TODO:
 		//   Make sure there are not too many letter.
 	

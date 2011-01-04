@@ -155,19 +155,28 @@ do {
 		$game->next_turn();
 		break;
 
-	case 'play_tiles':
-		// Get the word that the player is trying to spell.
-		$word = (string)$request->message->word;
-		// Get the position where the word begins.
-		$x1 = (int)$request->message->x1;
-		$y1 = (int)$request->message->y1;
-		// Get the postion where the word ends.
-		$x2 = (int)$request->message->x2;
-		$y2 = (int)$request->message->y2;
+	case 'play':
+		// The array of moves that the player is attempting to make in this play.
+		$moves = array();
+
+		// Get the tile info out of the XML.
+		foreach( $request->message->move as $xmlMove) {
+			$move = (object)array(
+				'tile' => new Tile( (string)$xmlMove->letter ),
+				'x' => (int)$xmlMove->x, 
+				'y' => (int)$xmlMove->y
+			);
+
+			// TODO: Set $move->tile->isWild based on XML.
+
+			$moves[] = $move;
+		}
 
 		// We don't care if this fails, if the player made a bad move then they lose 
 		// their turn.
-		$game->play_word( $word, $x1, $y1, $x2, $y2 );
+		$game->play( $moves );
+
+		sleep( 10 );
 
 		// Send the next player the game state.:q
 		$game->next_turn();

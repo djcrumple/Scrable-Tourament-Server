@@ -5,7 +5,7 @@ class Dictionary {
 	function __construct() {
 		$file = fopen( 'word_list.txt', 'r' );
 
-		while( $word = fread( $file ) ) {
+		while( $word = fread( $file, 32 ) ) {
 			$words[ $word ] = $word;
 		}
 	}

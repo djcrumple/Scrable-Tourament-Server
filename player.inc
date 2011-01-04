@@ -18,6 +18,17 @@ class Player {
 		$this->hand[] = $tile;
 	}
 
+	// Returns true if the player has the given letter in his hand, otherwise returns false.
+	function has_letter( $letter ) {
+		foreach( $this->hand as $tile ) {
+			if( $tile->letter == $letter ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	function hand_to_xml() {
 		$xml = "<hand>";
 
