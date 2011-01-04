@@ -57,13 +57,45 @@ class Game {
 	}
 
 	function next_turn() {
-		if( $currentPlayer === false ) {
+		if( $this->currentPlayer === false ) {
 			// This is the first turn of the game. Shuffle the players.
-			shuffle( $players );
-			$currentPlayer = 0;
+			shuffle( $this->players );
+			$this->currentPlayer = 0;
+		} else {
+			$this->currentPlayer++;
+
+			if( $this->currentPlayer = count( $this->players ) ) {
+				$this->currentPlayer = 0;
+			}
 		}
 
+		$boardXml = $this->board->to_xml();
 
+		$handXml = $this->players[ $this->currentPlayer ]->hand_to_xml();
+
+		echo $boardXml."\n";
+		echo $handXml."\n";
+
+		$req = 
+			"<request>".
+				"<type>game_state</type>".
+				"<message>".
+					"<game_id>$this->id</game_id>".
+					"$boardXml".
+					"$handXml".
+				"</message>".
+			"</request>".
+			"\n";
+
+		$ip = $this->players[ $this->currentPlayer ]->ip;
+		$port = $this->players[ $this->currentPlayer ]->port;
+
+		$file = fsockopen( $ip, $port );
+
+		if( false === fwrite( $file, $req ) ) {
+			echo "ERROR: Could not register.\n";
+		}
+		
 	}
 
 }

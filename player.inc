@@ -17,6 +17,23 @@ class Player {
 	function add_tile_to_hand( $tile ) {
 		$this->hand[] = $tile;
 	}
+
+	function hand_to_xml() {
+		$xml = "<hand>";
+
+		foreach( $this->hand as $tile ) {
+			$xml .= 
+				"<tile>".
+					"<letter>$tile->letter</letter>".
+					"<value>$tile->value</value>".
+				"</tile>".
+				"";
+		}
+
+		$xml .= "</hand>";
+
+		return $xml;
+	}
 }
 
 ?>
