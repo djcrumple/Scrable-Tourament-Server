@@ -4,19 +4,43 @@
 
 // List of all registered players indexed by their name. For each player
 // we will know their IP and Port number.
-$playerList = array();
+$registeredPlayers = array();
 
 function register_player( $name, $ip, $port ) {
+	global $registeredPlayers;
+
 	$player = (object)array(
 		'name' => $name,
 		'ip' => $ip,
 		'port' => $port
 	);
 
-	$playerList[ $name ] = $player;
+	$registeredPlayers[ $name ] = $player;
 
 	return $player;
 }
+
+function ping_player( $player ) {
+	$file = fsockopen( $player->ip, $player->port );
+
+	$ping = "<request><type>ping</type></request>\n";
+
+	if( false === fwrite( $file, $ping ) ) {
+		echo "Write failed\n";
+		return false;
+	}
+
+	stream_set_timeout( $file, 2 );
+
+	$resp = trim( fread( $file, 16 ) );
+
+	if( $resp != 'hello' ) {
+		return false;
+	}
+
+	return true;
+}
+
 
 require_once( 'game.inc' );
 
@@ -49,31 +73,6 @@ do {
 		echo "socket_accept() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
 		break;
 	}
-	/* Send instructions. */
-	//$msg = "\nWelcome to the PHP Test Server. \n" .
-		//"To quit, type 'quit'. To shut down the server type 'shutdown'.\n";
-	//socket_write($msgsock, $msg, strlen($msg));
-//
-	//do {
-		//if (false === ($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ))) {
-			//echo "socket_read() failed: reason: " . socket_strerror(socket_last_error($msgsock)) . "\n";
-			//break 2;
-		//}
-		//if (!$buf = trim($buf)) {
-			//continue;
-		//}
-		//if ($buf == 'quit') {
-			//break;
-		//}
-		//if ($buf == 'shutdown') {
-			//socket_close($msgsock);
-			//break 2;
-		//}
-		//$talkback = "PHP: You said '$buf'.\n";
-		//socket_write($msgsock, $talkback, strlen($talkback));
-		//echo "$buf\n";
-	//} while (true);
-	//socket_close($msgsock);
 	
 	if (false === ($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ))) {
 		echo "socket_read() failed: reason: " . socket_strerror(socket_last_error($msgsock)) . "\n";
@@ -106,7 +105,54 @@ do {
 		break;
 
 	case 'start_game':
+		print_r( $registeredPlayers );
+		// The list of players that will be added to the new game.
+		// The players must have been registered.
+		$gamePlayers = array();
+		foreach( $request->message->player as $playerName ) {
+			// Make sure playerName is not a SimpleXMLElement.
+			$playerName = (string)$playerName;
 
+			if( !$registeredPlayers[ $playerName ] ) {
+				echo "ERROR: $playerName is not registered\n";
+				continue;
+			}
+			$gamePlayers[] = $registeredPlayers[ $playerName ];
+		}
+
+		if( count( $gamePlayers ) < 1 ) {
+			echo "ERROR: Not enough registered players\n";
+		}
+
+		// Make sure all players are available
+		$missingPlayer = false;
+		foreach( $gamePlayers as $player ) { 
+			$available = ping_player( $player );
+
+			if( $available ) {
+				echo "$player->name is available\n";
+			} else {
+				echo "ERROR: $player->name is not available\n";
+				$missingPlayer = true;
+				break;
+			}
+		}
+
+		if( $missingPlayer ) {
+			echo "ERROR: Cannot start game, player missing.\n";
+		}
+
+		// Create the game
+		$game = new Game( $gamePlayers );
+
+		// Add all of the registered players to the game.
+		foreach( $gamePlayers as $player ) { 
+			$game->add_player( $player->name, $player->ip, $player->port );
+		}
+
+		print_r( $game );
+
+		$game->next_turn();
 		break;
 
 	case 'play_tiles':
