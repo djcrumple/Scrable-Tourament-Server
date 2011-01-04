@@ -172,23 +172,26 @@ class Board {
 				$x++;
 			}
 
-			if( $x < $maxX ) {
-				// There is a gap in the tiles.
-				echo "ERROR: Gap in the tiles.\n";
-				return false;
+			if( strlen( $word ) > 1 ) {
+
+				if( $x < $maxX ) {
+					// There is a gap in the tiles.
+					echo "ERROR: Gap in the tiles.\n";
+					return false;
+				}
+
+				// Make sure the word is in the dictionary. 
+				if( !( $dictionary->check_word( $word ) ) ) {
+					echo "ERROR: '$word' is not a word.\n";
+					return false;
+				}
+
+				// Calculate the score of the word and add it to the total score for this play.
+				$wordScore *= $wordBonus;
+				$score += $wordScore;
+
+				echo "'$word' scored $wordScore\n";
 			}
-
-			// Make sure the word is in the dictionary. 
-			if( !( $dictionary->check_word( $word ) ) ) {
-				echo "ERROR: '$word' is not a word.\n";
-				return false;
-			}
-
-			// Calculate the score of the word and add it to the total score for this play.
-			$wordScore *= $wordBonus;
-			$score += $wordScore;
-
-			echo "'$word' scored $wordScore\n";
 
 			// Now go through all of the words that were built perdindicular. 
 			foreach( $moves as $move ) {
@@ -233,17 +236,19 @@ class Board {
 					$y++;
 				}
 
-				// Make sure the word is in the dictionary. 
-				if( !( $dictionary->check_word( $word ) ) ) {
-					echo "ERROR: '$word' is not a word.\n";
-					return false;
+				if( strlen( $word ) > 1 ) {
+					// Make sure the word is in the dictionary. 
+					if( !( $dictionary->check_word( $word ) ) ) {
+						echo "ERROR: '$word' is not a word.\n";
+						return false;
+					}
+
+					// Calculate the score of the word and add it to the total score for this play.
+					$wordScore *= $wordBonus;
+					$score += $wordScore;
+
+					echo "'$word' scored $wordScore\n";
 				}
-
-				// Calculate the score of the word and add it to the total score for this play.
-				$wordScore *= $wordBonus;
-				$score += $wordScore;
-
-				echo "'$word' scored $wordScore\n";
 			}
 		}
 

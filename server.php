@@ -58,14 +58,17 @@ $port = 4609;
 
 if (($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) {
 	echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
+	exit( 1 );
 }
 
 if (socket_bind($sock, $address, $port) === false) {
 	echo "socket_bind() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
+	exit( 1 );
 }
 
 if (socket_listen($sock, 5) === false) {
 	echo "socket_listen() failed: reason: " . socket_strerror(socket_last_error($sock)) . "\n";
+	exit( 1 );
 }
 
 do {
@@ -176,7 +179,7 @@ do {
 		// their turn.
 		$game->play( $moves );
 
-		sleep( 10 );
+		sleep( 30 );
 
 		// Send the next player the game state.:q
 		$game->next_turn();

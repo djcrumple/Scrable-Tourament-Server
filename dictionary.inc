@@ -5,14 +5,16 @@ class Dictionary {
 	function __construct() {
 		$file = fopen( 'word_list.txt', 'r' );
 
-		while( $word = fread( $file, 32 ) ) {
-			$words[ $word ] = $word;
+		while( $word = fgets( $file ) ) {
+			$word = trim( $word );
+			//echo $word."\n";
+			$this->words[ $word ] = $word;
 		}
 	}
 
 	// Return true if word is in dictionary, otherwise false.
 	function check_word( $word ) {
-		if( isset( $words[ $word ] )  ) {
+		if( isset( $this->words[ $word ] )  ) {
 			return true;
 		} 
 
