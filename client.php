@@ -101,6 +101,7 @@ do {
 						"<letter>z</letter>".
 						"<x>7</x>".
 						"<y>8</y>".
+						"<blank>1</blank>".
 					"</move>".
 					"<move>".
 						"<letter>a</letter>".

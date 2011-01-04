@@ -171,6 +171,10 @@ do {
 			);
 
 			// TODO: Set $move->tile->isWild based on XML.
+			if( isset( $xmlMove->blank ) && $xmlMove->blank == '1' ) {
+				$move->tile->isWild = 1;
+				$move->tile->value = 0;
+			}
 
 			$moves[] = $move;
 		}

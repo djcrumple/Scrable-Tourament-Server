@@ -10,7 +10,7 @@ class Space {
 	const TYPE_DOUBLE_LETTER 	= '1';
 	const TYPE_TRIPLE_LETTER 	= '2';
 	const TYPE_DOUBLE_WORD 		= '3';
-	const TYPE_TRIPLE_WORK		= '4';
+	const TYPE_TRIPLE_WORD		= '4';
 
 	// The type of space. The type
 	public $type;

@@ -75,19 +75,33 @@ class Game {
 		$player = $this->players[ $this->currentPlayer ];
 
 		// See if the player has to tiles he is trying to play.
-		//foreach( $moves as $move ) {
-			//if( !$player->has_letter( $move->tile->letter ) ) {
-				//return false;
-			//}
-		//}
+		foreach( $moves as $move ) {
+			$tile = false;
+			if( $move->tile->isWild ) {
+				$tile = $player->get_tile( '*' );
+			} else {
+				$tile = $player->get_tile( $move->tile->letter );
+			}
+			$handTiles = array();
+		}
 
 		// Pass the moves to the board.
 		$score = $this->board->play( $moves );
 
 		if( $score === false ) {
 			echo "ERROR: Illegal play.\n";
+
+			// Give the player back his tiles.
+			foreach( $handTiles as $tile ) {
+				$player->add_tile_to_hand( $tile );
+			}
 		} else {
 			echo "Play was worth $score points\n";
+
+			// TODO: Get new tiles.
+			for( $i = 0; $i < count( $handTiles ); $i++ ) {
+				$player->add_tile_to_hand( $this->bag->draw_tile() );
+			}
 		}
 
 	}

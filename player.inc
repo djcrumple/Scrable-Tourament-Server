@@ -29,6 +29,17 @@ class Player {
 		return false;
 	}
 
+	// Return a tile in the player's hand that has the given letter.
+	function get_tile( $letter ) {
+		foreach( $this->hand as $index => $tile ) {
+			if( $tile->letter == $letter ) {
+				array_splice( $this->hand, $index, 1 );
+				return $tile;
+			}
+		}
+		return false;
+	}
+
 	function hand_to_xml() {
 		$xml = "<hand>";
 
