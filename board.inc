@@ -23,6 +23,77 @@ class Board {
 				$this->spaces[$i][$j] = new Space();
 			}
 		}	
+
+		// Set all of the special spaces.
+
+		// Double letter.
+		$this->spaces[0][3] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[0][11] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[2][6] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[2][8] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[3][0] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[3][7] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[3][14] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[6][2] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[6][6] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[6][8] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[6][12] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[7][3] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[7][11] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[8][2] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[8][6] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[8][8] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[8][12] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[11][0] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[11][7] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[11][14] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[12][6] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[12][8] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[14][3] = Space::TYPE_DOUBLE_LETTER;
+		$this->spaces[14][11] = Space::TYPE_DOUBLE_LETTER;
+
+		// Double Word
+		$this->spaces[1][1] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[1][13] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[2][2] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[2][12] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[3][3] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[3][11] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[4][4] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[4][10] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[7][7] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[10][4] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[10][10] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[11][3] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[11][11] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[12][2] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[12][12] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[13][1] = Space::TYPE_DOUBLE_WORD;
+		$this->spaces[13][13] = Space::TYPE_DOUBLE_WORD;
+
+		// Triple Letter
+		$this->spaces[1][5] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[1][9] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[5][1] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[5][5] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[5][9] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[5][13] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[9][1] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[9][5] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[9][9] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[9][13] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[13][5] = Space::TYPE_TRIPLE_LETTER;
+		$this->spaces[13][9] = Space::TYPE_TRIPLE_LETTER;
+
+		// Triple Word
+		$this->spaces[0][0] = Space::TYPE_TRIPLE_WORD;
+		$this->spaces[0][7] = Space::TYPE_TRIPLE_WORD;
+		$this->spaces[0][14] = Space::TYPE_TRIPLE_WORD;
+		$this->spaces[7][0] = Space::TYPE_TRIPLE_WORD;
+		$this->spaces[7][14] = Space::TYPE_TRIPLE_WORD;
+		$this->spaces[14][0] = Space::TYPE_TRIPLE_WORD;
+		$this->spaces[14][7] = Space::TYPE_TRIPLE_WORD;
+		$this->spaces[14][14] = Space::TYPE_TRIPLE_WORD;
 	}
 
 	// Convert the board to XML. The board will be represented as a string surrounded by <board>
@@ -151,16 +222,16 @@ class Board {
 
 				// Figure out the score.
 				switch( $space->type ) {
-				case Space::SPACE_TYPE_DOUBLE_LETTER:
+				case Space::TYPE_DOUBLE_LETTER:
 					$wordScore += $tile->value; 
 					break;
-				case Space::SPACE_TYPE_TRIPLE_LETTER:
+				case Space::TYPE_TRIPLE_LETTER:
 					$wordScore += $tile->value * 2; 
 					break;
-				case Space::SPACE_TYPE_DOUBLE_WORD:
+				case Space::TYPE_DOUBLE_WORD:
 					$wordBonus *= 2;
 					break;
-				case Space::SPACE_TYPE_TRIPLE_WORK:
+				case Space::TYPE_TRIPLE_WORK:
 					$wordBonus *= 3;
 					break;
 			
@@ -215,16 +286,16 @@ class Board {
 
 					// Figure out the score.
 					switch( $space->type ) {
-					case Space::SPACE_TYPE_DOUBLE_LETTER:
+					case Space::TYPE_DOUBLE_LETTER:
 						$wordScore += $tile->value; 
 						break;
-					case Space::SPACE_TYPE_TRIPLE_LETTER:
+					case Space::TYPE_TRIPLE_LETTER:
 						$wordScore += $tile->value * 2; 
 						break;
-					case Space::SPACE_TYPE_DOUBLE_WORD:
+					case Space::TYPE_DOUBLE_WORD:
 						$wordBonus *= 2;
 						break;
-					case Space::SPACE_TYPE_TRIPLE_WORK:
+					case Space::TYPE_TRIPLE_WORK:
 						$wordBonus *= 3;
 						break;
 
