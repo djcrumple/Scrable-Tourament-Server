@@ -78,6 +78,8 @@ class Game {
 		// Grab the current player.
 		$player = $this->players[ $this->currentPlayer ];
 
+		$handTiles = array();
+
 		// See if the player has to tiles he is trying to play.
 		foreach( $moves as $move ) {
 			$tile = false;
@@ -86,7 +88,7 @@ class Game {
 			} else {
 				$tile = $player->get_tile( $move->tile->letter );
 			}
-			$handTiles = array();
+			$handTiles[] = $tile;
 		}
 
 		// Pass the moves to the board.
