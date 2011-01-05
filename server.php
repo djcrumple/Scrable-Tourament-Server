@@ -202,8 +202,6 @@ do {
 		// their turn.
 		$game->play( $moves );
 
-		sleep( 30 );
-
 		// Send the next player the game state.:q
 		$game->next_turn();
 

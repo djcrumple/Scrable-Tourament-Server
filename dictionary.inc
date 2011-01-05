@@ -8,7 +8,7 @@ class Dictionary {
 		while( $word = fgets( $file ) ) {
 			$word = trim( $word );
 			//echo $word."\n";
-			$this->words[ $word ] = $word;
+			$this->words[ $word ] = strtolower( $word );
 		}
 	}
 
