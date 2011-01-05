@@ -1,11 +1,11 @@
 #! /usr/bin/php
 <?php
 
-$serverIp = '127.0.0.1';
-$serverPort = 4609;
+$serverIp = '192.168.55.33';
+$serverPort = 5609;
 
-$myIp = '127.0.0.1';
-$myPort = 4610;
+$myIp = '192.168.55.33';
+$myPort = 5610;
 
 function usage() {
 	echo "Usage:\n";

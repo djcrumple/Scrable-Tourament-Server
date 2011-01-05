@@ -98,7 +98,7 @@ do {
 	}
 
 	echo "Recieved the following request: \n";
-	print_r( $request );
+	//print_r( $request );
 
 	switch( $request->type ) {
 
@@ -111,7 +111,8 @@ do {
 		break;
 
 	case 'start_game':
-		print_r( $registeredPlayers );
+		//print_r( $registeredPlayers );
+
 		// The list of players that will be added to the new game.
 		// The players must have been registered.
 		$gamePlayers = array();
@@ -158,7 +159,7 @@ do {
 			$game->add_player( $player->name, $player->ip, $player->port );
 		}
 
-		print_r( $game );
+		//print_r( $game );
 
 		$game->next_turn();
 		break;
