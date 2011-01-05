@@ -2,7 +2,7 @@
 <?
 
 $serverIp = '192.168.55.33';
-$serverPort = '4609';
+$serverPort = '5609';
 
 $file = fsockopen( $serverIp, $serverPort );
 

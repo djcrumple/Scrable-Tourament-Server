@@ -13,10 +13,10 @@ set_time_limit(0);
 ob_implicit_flush();
 
 $serverIp = '192.168.55.33';
-$serverPort = 4609;
+$serverPort = 5609;
 
 $myIp = '192.168.55.33';
-$myPort = 4610;
+$myPort = 5610;
 
 
 // Register myself.
@@ -93,10 +93,15 @@ do {
 	case 'game_state':
 		$file = fsockopen( $serverIp, $serverPort );
 
+		$gameId = $request->message->game_id;
+		$hash = $request->message->hash;
+
 		$req = 
 			"<request>".
 				"<type>play</type>".
 				"<message>".
+     				"<game_id>$gameId</game_id>".
+					"<hash>$hash</hash>".
 					"<move>".
 						"<letter>z</letter>".
 						"<x>8</x>".
