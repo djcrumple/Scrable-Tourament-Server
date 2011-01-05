@@ -6,6 +6,9 @@
 // we will know their IP and Port number.
 $registeredPlayers = array();
 
+// List of all games being playerd.
+$activeGames = array();
+
 function register_player( $name, $ip, $port ) {
 	global $registeredPlayers;
 
@@ -148,6 +151,8 @@ do {
 		// Create the game
 		$game = new Game( $gamePlayers );
 
+		$activeGames[ $game->id ] = $game;
+
 		// Add all of the registered players to the game.
 		foreach( $gamePlayers as $player ) { 
 			$game->add_player( $player->name, $player->ip, $player->port );
@@ -161,6 +166,20 @@ do {
 	case 'play':
 		// The array of moves that the player is attempting to make in this play.
 		$moves = array();
+
+		if( isset( $request->message->game_id ) ) {
+			$game = $activeGames[ (int)$request->message->game_id ];
+		} else {
+			echo "ERROR: Bad game ID.\n";
+			continue;
+		}
+
+		if( isset( $request->message->hash ) ) {
+			if( $game->turnHash != (int)$request->message->hash ) {
+				echo "ERROR: Bad turn hash.\n";
+				continue;
+			}
+		}
 
 		// Get the tile info out of the XML.
 		foreach( $request->message->move as $xmlMove) {

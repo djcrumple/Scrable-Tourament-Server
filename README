@@ -80,6 +80,8 @@ Sample XML from an opening game state.
 <request>
   <type>game_state</type>
   <message>
+    <game_id>25</game_id>
+    <hash>8973473</hash>
   <board>000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</board>
     <hand>
       <tile>
@@ -121,6 +123,8 @@ blank tag.
 <request>
   <type>play</type>
   <message>
+    <game_id>25</game_id>
+    <hash>8973473</hash>
     <move>
       <letter>z</letter>
       <x>8</x>

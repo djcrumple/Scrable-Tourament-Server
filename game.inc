@@ -20,6 +20,8 @@ class Game {
 	// The index of the active player. If this game has not started this will
 	// be === false.
 	public $currentPlayer;
+	// A random value to verify the current player is actually making the move.
+	public $turnHash;
 
 
 	function __construct() {
@@ -35,6 +37,8 @@ class Game {
 		// We will pick a random player to be the current player after
 		// all players have been added.
 		$this->currentPlayer = false;
+
+		$this->turnHash = false;
 	}
 
 	function add_player( $name, $ip, $port ) {
@@ -119,6 +123,8 @@ class Game {
 			}
 		}
 
+		$this->turnHash = mt_rand();
+
 		$boardXml = $this->board->to_xml();
 
 		$handXml = $this->players[ $this->currentPlayer ]->hand_to_xml();
@@ -131,6 +137,7 @@ class Game {
 				"<type>game_state</type>".
 				"<message>".
 					"<game_id>$this->id</game_id>".
+					"<hash>$this->turnHash</hash>".
 					"$boardXml".
 					"$handXml".
 				"</message>".
