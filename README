@@ -115,15 +115,41 @@ Sample XML from an opening game state.
 </request>
 
 
+To play a turn the client sends the following XML to the server. Note that blank tiles are marked with a
+blank tag.
+
+<request>
+  <type>play</type>
+  <message>
+    <move>
+      <letter>z</letter>
+      <x>8</x>
+      <y>7</y>
+      <blank>1</blank>
+    </move>
+    <move>
+      <letter>a</letter>
+      <x>8</x>
+      <y>8</y>
+    </move>
+    <move>
+      <letter>p</letter>
+      <x>8</x>
+      <y>9</y>
+    </move>
+  </message>
+</request>
+
+
 SAMPLE FILES
 
 client.php: A sample client that can register with the server and wait for game states.
 
 start_game.php: Send a game request to the server that will allow client.php to play a game by itself.
 
-TODO:
 
-Determine XML for making moves and implement server code for handling moves.
+
+TODO:
 
 Handle "replace tiles" request from clients.
 

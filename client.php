@@ -99,8 +99,8 @@ do {
 				"<message>".
 					"<move>".
 						"<letter>z</letter>".
-						"<x>7</x>".
-						"<y>8</y>".
+						"<x>8</x>".
+						"<y>7</y>".
 						"<blank>1</blank>".
 					"</move>".
 					"<move>".
@@ -110,8 +110,8 @@ do {
 					"</move>".
 					"<move>".
 						"<letter>p</letter>".
-						"<x>9</x>".
-						"<y>8</y>".
+						"<x>8</x>".
+						"<y>9</y>".
 					"</move>".
 				"</message>".
 			"</request>".

@@ -321,6 +321,131 @@ class Board {
 					echo "'$word' scored $wordScore\n";
 				}
 			}
+		} else {
+			$word = "";
+			$x = $minX;
+			$y = $minY;
+
+			// This will be the product of all word bonuses. 2 double word bonuses would 
+			// make this 2 x 2 = 4
+			$wordBonus = 1;
+			// The sum of all the letter bonuses. 
+			$letterBonus = 0;
+			// The score of the current word. Multiple words may be formed in a single play.
+			$wordScore = 0;
+
+
+			// Find the first letter in the word.
+			while( $y > 0 && !( $copy[ $x ][ $y - 1 ]->is_empty() ) ) {
+				$y--;
+			}
+			
+			// From the first letter, build the word.
+			while( $y < $this->size - 1 && !( $copy[ $x ][ $y ]->is_empty() ) ) {
+				$space = $copy[ $x ][ $y ];
+				$tile = $space->tile;
+
+				// Figure out the score.
+				switch( $space->type ) {
+				case Space::TYPE_DOUBLE_LETTER:
+					$wordScore += $tile->value; 
+					break;
+				case Space::TYPE_TRIPLE_LETTER:
+					$wordScore += $tile->value * 2; 
+					break;
+				case Space::TYPE_DOUBLE_WORD:
+					$wordBonus *= 2;
+					break;
+				case Space::TYPE_TRIPLE_WORD:
+					$wordBonus *= 3;
+					break;
+			
+				}
+				$wordScore += $tile->value;
+
+				$word .= $tile->letter;
+
+				$y++;
+			}
+
+			if( strlen( $word ) > 1 ) {
+
+				if( $y < $maxY ) {
+					// There is a gap in the tiles.
+					echo "ERROR: Gap in the tiles.\n";
+					return false;
+				}
+
+				// Make sure the word is in the dictionary. 
+				if( !( $dictionary->check_word( $word ) ) ) {
+					echo "ERROR: '$word' is not a word.\n";
+					return false;
+				}
+
+				// Calculate the score of the word and add it to the total score for this play.
+				$wordScore *= $wordBonus;
+				$score += $wordScore;
+
+				echo "'$word' scored $wordScore\n";
+			}
+
+			// Now go through all of the words that were built perdindicular. 
+			foreach( $moves as $move ) {
+				// Reset the word.
+				$word = "";
+				$wordBonus = 1;
+				$wordScore = 0;
+
+				$x = $move->x;
+				$y = $move->y;
+
+				// Find the first letter in the word.
+				while( $x != 0 && !( $copy[ $x - 1 ][ $y ]->is_empty() ) ) {
+					$x++;
+				}
+
+				// From the first letter, build the word.
+				while( $x < $this->size - 1 && !( $copy[ $x ][ $y ]->is_empty() ) ) {
+					$space = $copy[ $x ][ $y ];
+					$tile = $space->tile;
+
+					// Figure out the score.
+					switch( $space->type ) {
+					case Space::TYPE_DOUBLE_LETTER:
+						$wordScore += $tile->value; 
+						break;
+					case Space::TYPE_TRIPLE_LETTER:
+						$wordScore += $tile->value * 2; 
+						break;
+					case Space::TYPE_DOUBLE_WORD:
+						$wordBonus *= 2;
+						break;
+					case Space::TYPE_TRIPLE_WORD:
+						$wordBonus *= 3;
+						break;
+
+					}
+					$wordScore += $tile->value;
+
+					$word .= $tile->letter;
+
+					$x++;
+				}
+
+				if( strlen( $word ) > 1 ) {
+					// Make sure the word is in the dictionary. 
+					if( !( $dictionary->check_word( $word ) ) ) {
+						echo "ERROR: '$word' is not a word.\n";
+						return false;
+					}
+
+					// Calculate the score of the word and add it to the total score for this play.
+					$wordScore *= $wordBonus;
+					$score += $wordScore;
+
+					echo "'$word' scored $wordScore\n";
+				}
+			}
 		}
 
 		if( count( $moves ) == 7 ) {
