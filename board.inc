@@ -186,8 +186,8 @@ class Board {
 		}
 
 		// Make sure the center space as a tile.
-		$centerX = ceil( $this->size / 2 );
-		$centerY = ceil( $this->size / 2 );
+		$centerX = floor( $this->size / 2 );
+		$centerY = floor( $this->size / 2 );
 		if( $copy[ $centerX ][ $centerY ]->is_empty() ) {
 			echo "ERROR: Center space is empty.\n";
 			return;
